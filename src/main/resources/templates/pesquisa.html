@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesquisa de Contatos</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Agenda Telefônica</h1>
+
+    <div class="acoes-topo">
+        <a class="btn btn-incluir" th:href="@{/contatos/novo}">
+            Incluir Contato
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>Pesquisar Contatos</h2>
+
+        <form method="get" th:action="@{/contatos}" class="form-pesquisa">
+            <div class="campo">
+                <label for="tipo">Pesquisar por:</label>
+                <select id="tipo" name="tipo">
+                    <option value="todos" th:selected="${tipo == 'todos'}">Nome ou Telefone</option>
+                    <option value="nome" th:selected="${tipo == 'nome'}">Nome</option>
+                    <option value="telefone" th:selected="${tipo == 'telefone'}">Telefone</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="termo">Termo:</label>
+                <input type="text"
+                       id="termo"
+                       name="termo"
+                       placeholder="Digite nome ou telefone"
+                       th:value="${termo}">
+            </div>
+
+            <button type="submit" class="btn btn-pesquisar">
+                Pesquisar
+            </button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Contatos Cadastrados</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Telefones</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="contato : ${contatos}">
+                <td th:text="${contato.id}"></td>
+                <td th:text="${contato.nome}"></td>
+                <td th:text="${contato.idade}"></td>
+                <td>
+                    <span th:each="telefone, iter : ${contato.telefones}">
+                        <span th:text="${telefone.numero}"></span>
+                        <span th:if="${!iter.last}"> | </span>
+                    </span>
+                </td>
+                <td class="acoes">
+                    <a class="btn btn-alterar"
+                       th:href="@{/contatos/editar/{id}(id=${contato.id})}">
+                        Alterar
+                    </a>
+
+                    <a class="btn btn-excluir"
+                       th:href="@{/contatos/excluir/{id}(id=${contato.id})}"
+                       onclick="return confirm('Deseja realmente excluir este contato?');">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(contatos)}">
+                <td colspan="5" class="sem-registros">
+                    Nenhum contato encontrado.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Cadastro de Contato</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 th:text="${titulo}">Cadastro de Contato</h1>
+
+    <div class="card">
+
+        <form method="post" th:action="@{/contatos/salvar}" th:object="${contato}">
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="campo">
+                <label for="nome">Nome:</label>
+                <input type="text"
+                       id="nome"
+                       th:field="*{nome}"
+                       maxlength="100"
+                       required>
+                <span class="erro" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="idade">Idade:</label>
+                <input type="number"
+                       id="idade"
+                       th:field="*{idade}"
+                       min="0"
+                       max="999"
+                       required>
+                <span class="erro" th:if="${#fields.hasErrors('idade')}" th:errors="*{idade}"></span>
+            </div>
+
+            <h3>Telefones</h3>
+
+            <div id="telefones">
+                <div class="telefone-item"
+                     th:each="telefone, status : *{telefones}">
+
+                    <input type="hidden"
+                           th:field="*{telefones[__${status.index}__].id}">
+
+                    <input type="text"
+                           th:field="*{telefones[__${status.index}__].numero}"
+                           maxlength="16"
+                           placeholder="Número do telefone">
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secundario" onclick="adicionarTelefone()">
+                Adicionar Telefone
+            </button>
+
+            <div class="acoes-form">
+                <button type="submit" class="btn btn-salvar">
+                    Salvar
+                </button>
+
+                <a class="btn btn-voltar" th:href="@{/contatos}">
+                    Voltar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    let contador = document.querySelectorAll('.telefone-item').length;
+
+    function adicionarTelefone() {
+        const container = document.getElementById('telefones');
+
+        const div = document.createElement('div');
+        div.className = 'telefone-item';
+
+        div.innerHTML = `
+            <input type="hidden" name="telefones[${contador}].id">
+            <input type="text"
+                   name="telefones[${contador}].numero"
+                   maxlength="16"
+                   placeholder="Número do telefone">
+        `;
+
+        container.appendChild(div);
+        contador++;
+    }
+</script>
+
+</body>
+</html>
