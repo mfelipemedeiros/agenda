@@ -61,7 +61,7 @@ O projeto utiliza PostgreSQL.
 Crie o banco de dados com o comando:
 
 ```sql
-CREATE DATABASE agenda_telefonica;
+CREATE DATABASE agendaTelefonica;
 ```
 
 Depois execute o script abaixo:
@@ -114,9 +114,9 @@ src/main/resources/application.properties
 Configure o acesso ao PostgreSQL:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/agenda_telefonica
-spring.datasource.username=postgres
-spring.datasource.password=postgres
+spring.datasource.url=jdbc:postgresql://localhost:5432/agendaTelefonica
+spring.datasource.username=agendauser
+spring.datasource.password=1234
 
 spring.jpa.hibernate.ddl-auto=none
 spring.sql.init.mode=always
@@ -137,13 +137,13 @@ spring.datasource.password
 Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/agenda-telefonica.git
+git clone https://github.com/mfelipemedeiros/agenda.git
 ```
 
 Acesse a pasta do projeto:
 
 ```bash
-cd agenda-telefonica
+cd agenda
 ```
 
 Execute a aplicação com Maven:
